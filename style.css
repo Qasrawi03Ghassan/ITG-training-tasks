@@ -1,0 +1,141 @@
+body{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: lightblue;
+    min-width: 400px;
+    
+}
+header{
+    margin-bottom: 130px;
+}
+main{
+    min-width: 400px;
+}
+.login-cont{
+    margin: 0 auto;
+    width: 60%;
+
+    border: none;
+    border-radius: 20px;
+    box-shadow: 1px 1px 50px 15px rgb(104, 129, 138);
+    background-color: #3C467B;
+    color: white;
+
+    padding: 20px;
+
+}
+.container{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+}
+.img-div{
+    border-right:5px solid white;
+    padding-right: 10px;
+    margin-right: 20px;
+}
+.form-cont{
+    border-bottom: 3px solid white;
+}
+.insideDiv{
+    margin-bottom: 10px;
+}
+#login-text{
+    font-size: 55px;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+label{
+    font-size: 30px;
+    margin-right: 15px;
+}
+input{
+    width: 200px;
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid white;
+    color: white;
+    font-size: 20px;
+}
+input::placeholder{
+    font-size: 16px;
+    color: wheat;
+}
+#pass-field{
+    position: relative;
+    left: 15px;
+}
+button{
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px;
+    margin: 10px;
+    margin-top:20px;
+    margin-bottom:20px;
+    width: 150px;
+    height: 60px;
+    border-radius: 17px;
+    border: none;
+    color: #3C467B;
+}
+button:hover:not(:disabled){
+    cursor: pointer;
+    background-color: rgb(224, 224, 224);
+}
+button:active:not(:disabled){
+    position:relative;
+    top: 3px;
+    background-color: rgb(163, 163, 163);
+}
+button:disabled{
+    background-color: rgb(99, 99, 99);
+}
+
+.options-div{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    
+    justify-content: center;
+    padding-left: 50px;
+    margin:0 auto;
+}
+
+footer{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+#eye,#eye-d{
+    position: relative;
+    left: 15px;
+    top: 3px;
+}
+#eye:hover,#eye-d:hover{
+    cursor: pointer;
+}
+
+#eye-d{
+    display:none;
+}
+
+.logo{
+    background-color: white;
+    padding: 25px;
+    border-radius: 50px;
+    width: 30%;
+}
+
+@media screen and (max-width:900px)
+{
+    .logo, #try{
+    display:none;
+    }
+    .img-div{
+        display:none;
+    }
+    .container{
+        display: flex;
+    }
+}
