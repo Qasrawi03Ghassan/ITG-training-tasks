@@ -1,6 +1,6 @@
 ﻿# 🎯 Task 1: Implementing a login page  
  ### 📝 Overview  
- - In this task, I was required to build a simple login page with simple styling using HTML, CSS and javaScript.  
+ - In this task, I was required to build a simple login page with simple styling using HTML, CSS and jQuery library.  
  ### ✅ Final result  
 ![login](https://github.com/user-attachments/assets/32c2116c-10b8-45e7-8acb-fe06c3464dcc)
 ### 🔔 Task requirements
@@ -15,6 +15,7 @@
 - Entering correct credentials will redirect the user after 2 seconds to the home page.
 - External links to sign in using Github, Gmail, or Outlook accounts.
 - Responsiveness.
+
 
 
 
