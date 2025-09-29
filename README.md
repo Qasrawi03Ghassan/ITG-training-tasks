@@ -10,10 +10,12 @@
   - If the user enters correct credentials, show "Login successful" message. (Correct username is "admin" and password is "12345")
 
 ### 💡 Added functionalities  
+- Red exclamation marks will appear behind each label when trying to login and a field is empty.
 - Password show and hide button.
 - Entering correct credentials will redirect the user after 2 seconds to the home page.
 - External links to sign in using Github, Gmail, or Outlook accounts.
 - Responsiveness.
+
 
 
 
