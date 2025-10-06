@@ -10,21 +10,22 @@ Each configuration parameter:
 Task:  
 Write a Java application that can:  
 1. **Create, update, and delete configuration parameters.**  
-      Each parameter has:   ------       id: Long  
+      Each parameter has:
+      id: Long  
       name: String  
       type: String ("STRING", "NUMBER", "BOOLEAN")  
       defaultValue: Object  
       environment: String ("DEV", "QA", "PROD")  
       overriddenValue: Object (nullable)  
       lastUpdated: LocalDateTime
-2. **Support dynamic overrides:**
+3. **Support dynamic overrides:**
    - If an overridden value exists → use it.  
    - If not → use the default value.
-3. **Track version history** (every time a parameter changes, store the old version with timestamp).
-4. **Provide a search feature:**  
+4. **Track version history** (every time a parameter changes, store the old version with timestamp).
+5. **Provide a search feature:**  
     - Search by environment, type, or partial name (case-insensitive).  
-5. **Export configuration to JSON** (pretty format) for deployment.
-6. **Validate input types** before saving (e.g., “NUMBER” must contain numeric value).
+6. **Export configuration to JSON** (pretty format) for deployment.
+7. **Validate input types** before saving (e.g., “NUMBER” must contain numeric value).
 ---------------------------------------------------------------------
 ### Example usage  
 ```bash
