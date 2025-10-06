@@ -7,7 +7,7 @@ Each configuration parameter:
 - Can have multiple versions (e.g., Dev, QA, Prod environments).
 - Can be temporarily overridden by a user or service.
 ----------------------------------------------------------------  
-Your task:  
+Task:  
 Write a Java application that can:  
 1. **Create, update, and delete configuration parameters.**  
       Each parameter has:   ------       id: Long  
