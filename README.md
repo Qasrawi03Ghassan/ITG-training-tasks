@@ -10,7 +10,7 @@ Each configuration parameter:
 Task:  
 Write a Java application that can:  
 1. **Create, update, and delete configuration parameters.**  
-      Each parameter has:
+      Each parameter has:  
       id: Long  
       name: String  
       type: String ("STRING", "NUMBER", "BOOLEAN")  
