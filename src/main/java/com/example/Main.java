@@ -1,24 +1,32 @@
 package com.example;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Scanner;
 
 public class Main {
+
+    public static Environment env;
     public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+
+        env = new Environment();
+        env.setVersion("DEV");
+
+        env.addParameter(new Parameter("URLs.limit","NUMBER",600,env.getVersion()));
+
+        System.out.println();
+        System.out.println(env);
         System.out.println();
 
-        List<Parameter> pList = new LinkedList<>();
-        Environment env1 = new Environment("PROD",pList);
-       
-        env1.addParameter(new Parameter(1L,"sms.limit","NUMBER",200,100));
-        env1.addParameter(new Parameter(2L,"NEW","NUMBER",200,500));
+        String command = in.nextLine().replaceAll("\\s+", "");
 
-        System.out.println(env1);
+        MainMethods.validateCommand(command,in);
         
-        env1.removeParameter(2L);
+        String operation[] = command.strip().split("\\(");
+        String params[] = operation[1].split(",");
+        
+        MainMethods.interpretCommand(operation[0],params);
+        System.out.println();
 
-        System.out.println(env1);
-
-
+        //System.out.println(env);
     }
 }

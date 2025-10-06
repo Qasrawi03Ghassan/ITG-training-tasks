@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 public class Parameter {
+    static final  String UK = "UNKNOWN"; 
+
     static LinkedList<Parameter> parametersList = new LinkedList<>();
 
     private Long id;
@@ -16,32 +18,44 @@ public class Parameter {
 
     public Parameter(){
         id = 0L;
-        name = "UNKNOWN";
-        type = "UNKNOWN";
-        environment = "Undefined";
+        name = UK;
+        type = UK;
+        environment = UK;
         defaultValue = new Object();
         overriddenValue = null;
         lastUpdated = LocalDateTime.now();
 
     }
 
-    public Parameter(String name){
+    public Parameter(String name, String type, Object defaultValue, String environment){
         this.name = name;
+        this.type = type;
+        this.environment = environment;
+
+        if(!(defaultValue instanceof Environment)){
+            this.defaultValue = defaultValue;
+            if(overriddenValue == null){
+                overriddenValue = defaultValue;
+            }
+        }else{
+            defaultValue = UK;
+        }
     }
 
-    public Parameter(Long id,String name,String type, Object value, Object defaultValue){
+    public Parameter(Long id,String name,String type, Object value, Object defaultValue, String env){
         this.id = id;
         this.name = name;
         this.type = type;
+        this.environment = env;
 
-        if(!(value instanceof Environment) || !(defaultValue instanceof Environment)){
-            this.overriddenValue = value;
+        if(!(value instanceof Environment) && !(defaultValue instanceof Environment)){
             this.defaultValue = defaultValue;
-        }else{
-            overriddenValue = null;
-        }
-        
-        
+            if(overriddenValue == null){
+                overriddenValue = defaultValue;
+            }else{
+                overriddenValue = value;
+            }
+        }      
     }
 
     public Long getId() {
