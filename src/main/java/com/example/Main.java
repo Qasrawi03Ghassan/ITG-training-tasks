@@ -1,16 +1,24 @@
 package com.example;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-       for(int i=0;i<Parameter.parametersList.size();i++){
-        System.out.println(Parameter.parametersList.get(i));
-       }
+        System.out.println();
 
-       Parameter x = new Parameter();
-       Parameter.addParameter(x);
+        List<Parameter> pList = new LinkedList<>();
+        Environment env1 = new Environment("PROD",pList);
        
-        for(int i=0;i<Parameter.parametersList.size();i++){
-        System.out.println(Parameter.parametersList.get(i));
-       }
+        env1.addParameter(new Parameter(1L,"sms.limit","NUMBER",200,100));
+        env1.addParameter(new Parameter(2L,"NEW","NUMBER",200,500));
+
+        System.out.println(env1);
+        
+        env1.removeParameter(2L);
+
+        System.out.println(env1);
+
+
     }
 }

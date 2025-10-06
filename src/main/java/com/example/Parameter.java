@@ -25,12 +25,23 @@ public class Parameter {
 
     }
 
+    public Parameter(String name){
+        this.name = name;
+    }
+
     public Parameter(Long id,String name,String type, Object value, Object defaultValue){
         this.id = id;
         this.name = name;
         this.type = type;
-        this.overriddenValue = value;
-        this.defaultValue = defaultValue;
+
+        if(!(value instanceof Environment) || !(defaultValue instanceof Environment)){
+            this.overriddenValue = value;
+            this.defaultValue = defaultValue;
+        }else{
+            overriddenValue = null;
+        }
+        
+        
     }
 
     public Long getId() {
@@ -95,6 +106,6 @@ public class Parameter {
 
     @Override
     public String toString(){
-        return String.format("[{\"name\": \"%s\",\"type\": \"%s\",\"value: %s\",\"defaultValue: %s\"}]",name,type,overriddenValue,defaultValue);
+        return String.format("{\"name\": \"%s\",\"type\": \"%s\",\"value\": %s,\"defaultValue\": %s}",name,type,overriddenValue,defaultValue);
     }    
 }
