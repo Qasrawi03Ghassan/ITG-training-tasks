@@ -20,6 +20,11 @@ public class Environment {
         version = "UNKNOWN";
     }
 
+    public Environment(String version){
+        parameters = new LinkedList<>();
+        this.version = version;
+    }
+
     public Environment(String version, List<Parameter> pList){
         this.version = version;
         this.parameters = pList;
