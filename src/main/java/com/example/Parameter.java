@@ -34,9 +34,10 @@ public class Parameter {
 
         if(!(defaultValue instanceof Environment)){
             this.defaultValue = defaultValue;
-            if(overriddenValue == null){
-                overriddenValue = defaultValue;
-            }
+            // if(overriddenValue == null){
+            //     overriddenValue = defaultValue;
+            // }
+            overriddenValue = null;
         }else{
             defaultValue = UK;
         }
@@ -120,6 +121,9 @@ public class Parameter {
 
     @Override
     public String toString(){
-        return String.format("{\"name\": \"%s\",\"type\": \"%s\",\"value\": %s,\"defaultValue\": %s}",name,type,overriddenValue,defaultValue);
+        if(type.equals("STRING")){
+            return String.format("{\"name\": \"%s\",\"type\": \"%s\",\"value\": \"%s\",\"defaultValue\": \"%s\"}",name,type,(overriddenValue == null?defaultValue:overriddenValue),defaultValue);
+        }
+        return String.format("{\"name\": \"%s\",\"type\": \"%s\",\"value\": %s,\"defaultValue\": %s}",name,type,(overriddenValue == null?defaultValue:overriddenValue),defaultValue);
     }    
 }
