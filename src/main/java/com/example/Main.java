@@ -16,6 +16,8 @@ public class Main {
         qaEnv.addParameter(new Parameter("HTTPS.reqs","NUMBER",5000,qaEnv.getVersion()));
         prodEnv.addParameter(new Parameter("Secure.state","BOOLEAN",true,prodEnv.getVersion()));
 
+        String command = "";
+
         //Testing purposes only
         /*System.out.println();
         System.out.println(devEnv);
@@ -23,18 +25,20 @@ public class Main {
         System.out.println(prodEnv);
         System.out.println(); */
 
+        do{
+            command = in.nextLine().replaceAll("\\s+", ""); // Spaces are not needed in the commands
 
+            MainMethods.validateCommand(command,in);
+            
+            String operation[] = command.strip().split("\\(");
+            String params[] = operation[1].split(",");
+            
+            MainMethods.interpretCommand(operation[0],params);
+        //System.out.println();
+        }while(!command.equalsIgnoreCase("quit"));
+        in.close();
 
-        String command = in.nextLine().replaceAll("\\s+", ""); // Spaces are not needed in the commands
-
-        MainMethods.validateCommand(command,in);
         
-        String operation[] = command.strip().split("\\(");
-        String params[] = operation[1].split(",");
-        
-        MainMethods.interpretCommand(operation[0],params);
-        System.out.println();
-
         //Testing purposes only
         /*System.out.println();
         System.out.println(devEnv);

@@ -13,7 +13,6 @@ public  class MainMethods {
             System.out.println("Invalid command, please try again: ");
             command = in.nextLine().replaceAll("\\s+", "");
         }
-        in.close();
     }
 
     public static void checkValueType(String type, Object value){
@@ -41,14 +40,14 @@ public  class MainMethods {
             }
         }
 
-        String name;
-        String type;
-        Object value;
-        String environment;
+        String name="";
+        String type="";
+        Object value=null;
+        String environment="";
 
         switch (op) {
             case "addparameter":
-                //System.out.println("Add a new parameter using these params: " ); 
+                //System.out.println("Add a new parameter using these params: " ); COMPLETED
 
                 if(params.length != 4){
                     System.err.println("Invalid parameters count, system will shutdown.");
@@ -107,15 +106,43 @@ public  class MainMethods {
                     System.err.println("Invalid parameters count, system will shutdown.");
                     System.exit(1);
                 }
-                String target = params[0];
-                handleExportByEnv(target);
+                String targetToExport = params[0];
+                handleExportByEnv(targetToExport);
 
                 break;
 
              case "deleteparameter":
-                System.out.println("Delete a specific parameter");
+                //System.out.println("Delete a specific parameter"); COMPLETED
 
+                if(params.length != 2){
+                     System.err.println("Invalid parameters count, system will shutdown.");
+                    System.exit(1);
+                }
+                environment = params[0];
+                String targetToDelete = params[1];
+                try{
+                    Long targetId = Long.parseLong(targetToDelete);
+                    
+                    switch (environment) {
+                        case "DEV":
+                            handleRemoveParameter(Main.devEnv, targetId);
+                            break;
 
+                        case "QA":
+                            handleRemoveParameter(Main.qaEnv, targetId);
+                            break;
+
+                        case "PROD":
+                            handleRemoveParameter(Main.prodEnv, targetId);
+                            break;
+                    
+                        default:
+                            break;
+                    }
+
+                }catch(NumberFormatException e){
+                    handleRemoveParameter(Main.devEnv, targetToDelete);
+                }
 
                 break;
 
@@ -134,10 +161,23 @@ public  class MainMethods {
         }
         envObj.addParameter(newParam);
     }
+
+    public static void handleRemoveParameter(Environment envObj, String name){
+        for(int i=0;i<envObj.getParameters().size();i++){
+            if(name.equals(envObj.getParameters().get(i).getName())){
+                envObj.removeParameter(name);
+            }
+        }
+    }
+    public static void handleRemoveParameter(Environment envObj, Long id){
+        for(int i=0;i<envObj.getParameters().size();i++){
+            if(id.equals(envObj.getParameters().get(i).getId())){
+                envObj.removeParameter(id);
+            }
+        }
+    }
     
     public static void handleExportByEnv(String t){
-        System.out.println();
-
         if(t.equals(Main.devEnv.getVersion())){
             System.out.println(Main.devEnv);
         }else if(t.equals(Main.prodEnv.getVersion())){
@@ -147,6 +187,6 @@ public  class MainMethods {
         }else{
             System.out.println(t + " environment was not found.");
         }
+        System.out.println();
     }
-
 }

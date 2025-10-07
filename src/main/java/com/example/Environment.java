@@ -7,6 +7,14 @@ public class Environment {
     private List<Parameter> parameters;
     private String version;
 
+    public List<Parameter> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<Parameter> parameters) {
+        this.parameters = parameters;
+    }
+
     public String getVersion() {
         return version;
     }
@@ -40,17 +48,17 @@ public class Environment {
 
     public void removeParameter(Long id){
        for(int i=0;i<parameters.size();i++){
-        if(parameters.get(i).getId().equals(id)){
-            parameters.remove(parameters.get(i));
-        }
+            if(parameters.get(i).getId().equals(id)){
+                parameters.remove(parameters.get(i));
+            }
        }       
     }
 
     public void removeParameter(String name){
        for(int i=0;i<parameters.size();i++){
-        if(parameters.get(i).getName().equals(name)){
-            parameters.remove(parameters.get(i));
-        }
+            if(parameters.get(i).getName().equals(name)){
+                parameters.remove(parameters.get(i));
+            }
        }       
     }
 
