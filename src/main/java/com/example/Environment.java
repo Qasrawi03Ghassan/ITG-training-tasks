@@ -1,5 +1,7 @@
 package com.example;
 
+import java.io.FileWriter;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -64,42 +66,67 @@ public class Environment {
     }
 
     public void findAndUpdateParameter(String name,String type, Object value, String env){
-        int found = 0;
-        for(Parameter p : parameters){
-            if(p.getName().equals(name)){
-                found = 1;
-                p.setType(type);
-                p.setEnvironment(env);
-                p.setOverriddenValue(value);
-                p.setDefaultValue(value);
-            }else{
-                found = 0;
+        try {
+            int found = 0;
+            for(Parameter p : parameters){
+                if(p.getName().equals(name)){
+                    found = 1;
+
+                    FileWriter fr = new FileWriter("changesLogger.txt",true);
+                    p.setLastUpdated(LocalDateTime.now());
+                    fr.write(p + " => " + p.getLastUpdated() + "\n");
+                    fr.close();
+
+                    p.setType(type);
+                    p.setEnvironment(env);
+                    p.setOverriddenValue(value);
+                    p.setDefaultValue(value);
+                }else{
+                    found = 0;
+                }
             }
-        }
-        if(found == 0){
-            System.out.println("\"" + name + "\" does not exist in \"" + getVersion() + "\" environment.");
+            if(found == 0){
+                System.out.println("\"" + name + "\" does not exist in \"" + getVersion() + "\" environment.");
+            }   
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 
     public void findAndOverrideValue(String name,Object value){
-        int found = 0;
-        for(Parameter p : parameters){
-            if(p.getName().equals(name)){
-                found = 1;
-                p.setOverriddenValue(value);
-            }else{
-                found = 0;
+        try {
+            int found = 0;
+            for(Parameter p : parameters){
+                if(p.getName().equals(name)){
+                    found = 1;
+
+                    if(!MainMethods.checkValueType(p.getType(), value)){
+                        return;
+                    }
+
+                    FileWriter fr = new FileWriter("changesLogger.txt",true);
+                    p.setLastUpdated(LocalDateTime.now());
+                    fr.write(p + " => " + p.getLastUpdated() + "\n");
+                    fr.close();
+
+
+                    p.setOverriddenValue(value);
+                }else{
+                    found = 0;
+                }
             }
-        }
-        if(found == 0){
-            System.out.println("\"" + name + "\" does not exist in \"" + getVersion() + "\" environment.");
+            if(found == 0){
+                System.out.println("\"" + name + "\" does not exist in \"" + getVersion() + "\" environment.");
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 
     public void searchByEnv(){
         int found = 0;
         for(Parameter p:parameters){
-            if(p.getEnvironment().equalsIgnoreCase(this.getVersion())){
+            if(p.getEnvironment().equals(this.getVersion())){
                 found = 1;
                 System.out.print(p + " ");
             }else{
@@ -122,9 +149,10 @@ public class Environment {
             }
         }
         if(found == 0){
-            System.out.println("Could not find any parameters with subname \"" + subName + "\" in \"" + getVersion() + "\" environment");
+            System.out.println("Could not find any parameters with subname \"" + subName + "\" in \"" + getVersion() + "\" environment.");
+        }else{
+            System.out.println();
         }
-        System.out.println();
     }
     public void searchByType(String type){
         type = type.toUpperCase();
@@ -138,9 +166,10 @@ public class Environment {
             }
         }
         if(found == 0){
-            System.out.println("Could not find any parameters with subname \"" + type + "\" in \"" + getVersion() + "\" environment");
+            System.out.println("Could not find any parameters with type \"" + type + "\" in \"" + getVersion() + "\" environment.\n");
+        }else{
+            System.out.println();
         }
-        System.out.println();
     }
 
   

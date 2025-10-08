@@ -1,5 +1,6 @@
 package com.example;
 
+import java.io.FileWriter;
 import java.util.Scanner;
 
 public  class MainMethods {
@@ -12,29 +13,35 @@ public  class MainMethods {
         while(!command.contains("(") || !command.endsWith(")")){
             System.out.println("Invalid command, please try again: ");
             command = in.nextLine().replaceAll("\\s+", "");
-            if(command.equals("quit") || command.equals("exit") || command.equals("q"))System.exit(0);
+            if(command.equalsIgnoreCase("quit") || command.equalsIgnoreCase("exit") || command.equals("q"))System.exit(0);
         }
     }
 
-    public static void checkValueType(String type, Object value){
+    public static boolean checkValueType(String type, Object value){
+        boolean flag = false;
         try{
             if(type.equals("NUMBER")){
                 value = Integer.parseInt((String)value);
+                flag =  true;
             }else if(type.equals("BOOLEAN")){
                 value = Boolean.parseBoolean((String)value);
+                flag =  true;
             }else if(type.equals("STRING")){
                 value = String.valueOf(value);
+                flag =  true;
             }else{
                 System.out.println("Invalid type, supported types are: \"BOOLEAN\",\"STRING\",\"NUMBER\"");
+                flag = false;
             }
         }catch(Exception e){
             System.out.println("Invalid parameters, value of \"" + value + "\" is not of type \"" + type + "\".");
+            flag =  false;
         }
+        return flag;
     }
 
-    public static void interpretCommand(String op, String params[]){
+    public static void interpretCommand(String op, String params[],Environment[] envsArr){
         op=op.toLowerCase();
-
         if(params.length == 0){
             System.err.println("Invalid command: no parameters were given.");
         }
@@ -52,11 +59,8 @@ public  class MainMethods {
         String type="";
         Object value=null;
         String environment="";
-
         switch (op) {
             case "addparameter":
-                //System.out.println("Add a new parameter using these params: " ); COMPLETED
-
                 if(params.length != 4){
                     System.err.println("Invalid parameters count.");
                     break;
@@ -64,22 +68,24 @@ public  class MainMethods {
 
                 name = params[0];
                 type = params[1];
-                value=params[2];
+                value = params[2];
                 environment = params[3];
 
-                checkValueType(type, value);
+                if(!checkValueType(type, value)){
+                    break;
+                }
                 
                 switch (environment) {
                 case "DEV":
-                    handleAddParam(Main.devEnv, name, type, value, environment);
+                    handleAddParam(envsArr[0], name, type, value, environment);
                     break;
 
                 case "QA":
-                    handleAddParam(Main.qaEnv, name, type, value, environment);
+                    handleAddParam(envsArr[1], name, type, value, environment);
                     break;
 
                 case "PROD":
-                    handleAddParam(Main.prodEnv, name, type, value, environment);
+                    handleAddParam(envsArr[2], name, type, value, environment);
                     break;
             
                 default:
@@ -90,26 +96,27 @@ public  class MainMethods {
                 break;
 
             case "updateparameter":
-                    //System.out.println("Update an existing parameter"); COMPLETED
 
                     name = params[0];
                     type = params[1];
                     value=params[2];
                     environment = params[3];
 
-                    checkValueType(type, value);
+                    if(!checkValueType(type, value)){
+                        break;
+                    }
 
                     switch (environment) {
                         case "DEV":
-                            handleUpdateParameter(Main.devEnv, name, type, value, environment);
+                            handleUpdateParameter(envsArr[0], name, type, value, environment);
                             break;
 
                         case "QA":
-                            handleUpdateParameter(Main.qaEnv, name, type, value, environment);
+                            handleUpdateParameter(envsArr[1], name, type, value, environment);
                             break;
 
                         case "PROD":
-                            handleUpdateParameter(Main.prodEnv, name, type, value, environment);
+                            handleUpdateParameter(envsArr[2], name, type, value, environment);
                             break;
                     
                         default:
@@ -120,7 +127,6 @@ public  class MainMethods {
                 break;
 
             case "overridevalue":
-                //System.out.println("Override an existing value"); COMPLETED
 
                 name = params[0];
                 environment = params[1];
@@ -128,81 +134,70 @@ public  class MainMethods {
 
                 switch (environment) {
                     case "DEV":
-                        handleOverrideValue(Main.devEnv, name, value);
+                        handleOverrideValue(envsArr[0], name, value);
                         break;
 
                     case "QA":
-                        handleOverrideValue(Main.qaEnv, name, value);
+                        handleOverrideValue(envsArr[1], name, value);
                         break;
 
                     case "PROD":
-                        handleOverrideValue(Main.prodEnv, name, value);
+                        handleOverrideValue(envsArr[2], name, value);
                         break;
                     
                     default:
                         break;
                     }
-
-
                 
                 break;
 
             case "search":
-                System.out.println("Search for a parameter - case insensitive");
-
                 environment = params[0];
 
-
-                switch (environment.toUpperCase()) {
+                switch (environment) {
                         case "DEV":
-                            handleSearch(Main.devEnv);
+                            handleSearch(envsArr[0]);
                             break;
 
                         case "QA":
-                            handleSearch(Main.qaEnv);
+                            handleSearch(envsArr[1]);
                             break;
 
                         case "PROD":
-                            handleSearch(Main.prodEnv);
+                            handleSearch(envsArr[2]);
                             break;
 
                         case "BOOLEAN","STRING","NUMBER":
-                            handleSearchByType(Main.devEnv, environment);
-                            handleSearchByType(Main.prodEnv, environment);
-                            handleSearchByType(Main.qaEnv, environment);
+
+                            handleSearchByType(envsArr[0], environment);
+                            handleSearchByType(envsArr[2], environment);
+                            handleSearchByType(envsArr[1], environment);
 
                             break;
                         
                         default:
 
-                            handleSearch(Main.devEnv,environment);
-                            handleSearch(Main.qaEnv,environment);
-                            handleSearch(Main.prodEnv,environment);
+                            handleSearch(envsArr[0],environment);
+                            handleSearch(envsArr[1],environment);
+                            handleSearch(envsArr[2],environment);
 
                             break;
                     }
                 
-
-
-
-
                 break;
         
-
             case "export":
-                //System.out.println("Export environment to JSON"); COMPLETED
 
                 if(params.length != 1){
                     System.err.println("Invalid parameters count, system will shutdown.");
                     System.exit(1);
                 }
                 String targetToExport = params[0];
-                handleExportByEnv(targetToExport);
+                handleExportByEnv(envsArr,targetToExport);
 
                 break;
 
              case "deleteparameter","removeparameter":
-                //System.out.println("Delete a specific parameter"); COMPLETED
 
                 if(params.length != 2){
                      System.err.println("Invalid parameters count.");
@@ -216,15 +211,15 @@ public  class MainMethods {
                     
                     switch (environment) {
                         case "DEV":
-                            handleRemoveParameter(Main.devEnv, targetId);
+                            handleRemoveParameter(envsArr[0], targetId);
                             break;
 
                         case "QA":
-                            handleRemoveParameter(Main.qaEnv, targetId);
+                            handleRemoveParameter(envsArr[1], targetId);
                             break;
 
                         case "PROD":
-                            handleRemoveParameter(Main.prodEnv, targetId);
+                            handleRemoveParameter(envsArr[2], targetId);
                             break;
                     
                         default:
@@ -232,9 +227,9 @@ public  class MainMethods {
                     }
 
                 }catch(NumberFormatException e){
-                    if(environment.equals("DEV"))handleRemoveParameter(Main.devEnv, targetToDelete);
-                    else if(environment.equals("QA"))handleRemoveParameter(Main.qaEnv, targetToDelete);
-                    else if(environment.equals("PROD"))handleRemoveParameter(Main.prodEnv, targetToDelete);
+                    if(environment.equals("DEV"))handleRemoveParameter(envsArr[0], targetToDelete);
+                    else if(environment.equals("QA"))handleRemoveParameter(envsArr[1], targetToDelete);
+                    else if(environment.equals("PROD"))handleRemoveParameter(envsArr[2], targetToDelete);
                     else{
                         System.out.println("Environment \"" + environment + "\" does not exist.");
                     }
@@ -257,22 +252,11 @@ public  class MainMethods {
         envObj.addParameter(newParam);
     }
 
-    public static void logOldParameter(Environment envObj, String name,String type, Object value, String env){
-        //TODO: Implement file logging 
-        System.out.println("Must log old data with time stamp before updating.");
-
-
-
-    }
-
     public static void handleUpdateParameter(Environment envObj,String name,String type, Object value, String env){
-        logOldParameter(envObj, name, type, value, env);
         envObj.findAndUpdateParameter(name, type, value, env);
     }
 
     public static void handleOverrideValue(Environment envObj, String name,Object value){
-        //TODO: Implement file logging for overriding
-        //logOldParameter(envObj, name, name, value, name);
         envObj.findAndOverrideValue(name, value);
     }
 
@@ -303,20 +287,24 @@ public  class MainMethods {
     }
 
     public static void handleSearch(Environment envObj,String subName){
+        System.out.println("\"" + envObj.getVersion() + "\" environment:");
         envObj.searchBySubName(subName);
+        System.out.println("\n------------------------------------");
     }
 
     public static void handleSearchByType(Environment envObj,String type){
+        System.out.println("\"" + envObj.getVersion() + "\" environment:");
         envObj.searchByType(type);
+        System.out.println("\n------------------------------------");
     }
     
-    public static void handleExportByEnv(String t){
-        if(t.equals(Main.devEnv.getVersion())){
-            System.out.println(Main.devEnv);
-        }else if(t.equals(Main.prodEnv.getVersion())){
-            System.out.println(Main.prodEnv);
-        }else if(t.equals(Main.qaEnv.getVersion())){
-            System.out.println(Main.qaEnv);
+    public static void handleExportByEnv(Environment[] envsArr,String t){
+        if(t.equals(envsArr[0].getVersion())){
+            System.out.println(envsArr[0]);
+        }else if(t.equals(envsArr[2].getVersion())){
+            System.out.println(envsArr[2]);
+        }else if(t.equals(envsArr[1].getVersion())){
+            System.out.println(envsArr[1]);
         }else{
             System.out.println("\"" + t + "\" environment was not found.");
         }
