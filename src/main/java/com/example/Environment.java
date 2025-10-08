@@ -74,7 +74,7 @@ public class Environment {
 
                     FileWriter fr = new FileWriter("changesLogger.txt",true);
                     p.setLastUpdated(LocalDateTime.now());
-                    fr.write(p + " => " + p.getLastUpdated() + "\n");
+                    fr.write(p + ",environment:" + p.getEnvironment() + " => " + p.getLastUpdated() + "\n");
                     fr.close();
 
                     p.setType(type);
@@ -106,7 +106,7 @@ public class Environment {
 
                     FileWriter fr = new FileWriter("changesLogger.txt",true);
                     p.setLastUpdated(LocalDateTime.now());
-                    fr.write(p + " => " + p.getLastUpdated() + "\n");
+                    fr.write(p + ",environment:" + p.getEnvironment() + " => " + p.getLastUpdated() + "\n");
                     fr.close();
 
 
