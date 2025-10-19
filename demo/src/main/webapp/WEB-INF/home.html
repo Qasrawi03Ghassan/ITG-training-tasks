@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <style>
+    #main-div{
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        width: 100%;
+        transform: translate(-50%,-50%);
+    }
+    table { 
+        border-collapse: collapse; 
+        width: 50%; 
+        margin: 20px auto; 
+        text-align: center;
+    }
+
+    th, td { 
+        border: 1px solid #999; 
+        padding: 10px; 
+        text-align: center;
+    }
+
+    th { 
+        background-color: #f2f2f2; 
+    }
+
+    .logout-button {
+        display: block;
+        margin: 20px auto;
+        padding: 8px 15px;
+        background-color: #c33;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .logout-button:hover {
+        background-color: #a00;
+    }
+</style>
+</head>
+<body>
+    <div id="main-div">
+        <h1 style="text-align: center;">Login successful, welcome <span id="name-span"></span> to home page</h1>
+        <table>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Phone number
+                </th>
+            </tr>
+        </table>
+        <form method="post" action="logout">
+            <button class="logout-button" type="submit">Sign out</button>
+        </form>
+    </div>
+    <script>
+	    fetch('/api/user')
+	    .then(response => response.json())
+	    .then(data => {
+	    	const name = document.getElementById('name-span');
+	      const table = document.querySelector('table');
+	      data.forEach(user => {
+	    	name.innerHTML = `${user.name}`;
+	    	name.style.color='red';
+	    	name.style.fontWieght='900';
+	    	name.style.fontSize='30px';
+	    	
+	        const row = table.insertRow();
+	        row.innerHTML = `
+	          <td>${user.id}</td>
+	          <td>${user.username}</td>
+	          <td>${user.email}</td>
+	          <td>${user.phone}</td>
+	        `;
+	      });
+	    })
+	    .catch(err => console.error(err));
+    </script>
+</body>
+</html>
