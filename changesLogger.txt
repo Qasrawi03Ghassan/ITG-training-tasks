@@ -1,0 +1,2 @@
+{"name": "sms.limit","type": "NUMBER","value": 100,"defaultValue": 100},environment:DEV => 2025-10-16T14:58:12.308663200
+{"name": "sms.limit","type": "BOOLEAN","value": true,"defaultValue": true},environment:DEV => 2025-10-16T14:59:33.812992

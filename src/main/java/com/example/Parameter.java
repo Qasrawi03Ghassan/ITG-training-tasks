@@ -34,9 +34,6 @@ public class Parameter {
 
         if(!(defaultValue instanceof Environment)){
             this.defaultValue = defaultValue;
-            // if(overriddenValue == null){
-            //     overriddenValue = defaultValue;
-            // }
             overriddenValue = null;
         }else{
             defaultValue = UK;
@@ -125,5 +122,48 @@ public class Parameter {
             return String.format("{\"name\": \"%s\",\"type\": \"%s\",\"value\": \"%s\",\"defaultValue\": \"%s\"}",name,type,(overriddenValue == null?defaultValue:overriddenValue),defaultValue);
         }
         return String.format("{\"name\": \"%s\",\"type\": \"%s\",\"value\": %s,\"defaultValue\": %s}",name,type,(overriddenValue == null?defaultValue:overriddenValue),defaultValue);
-    }    
+    }  
+    
+    public static Long x = 0L;
+    public static Parameter parseParameter(String param){
+        param = param.strip();
+        Parameter newP = new Parameter();
+        x++;
+        newP.id = x;
+        String cutArr[] = new String[5];
+
+        param = param.replace("{", "");
+        param = param.replace("}","" );
+        param = param.replace("\"","" );
+        
+        cutArr = param.split(",");
+
+        for(int i=0;i<cutArr.length;i++){
+            cutArr[i] = cutArr[i].split(":")[1].strip();
+        }
+
+        newP.name = cutArr[0].strip();
+        newP.type = cutArr[1].strip();
+        newP.environment = cutArr[4].strip();
+
+        //Must store values as their types, not as strings
+        newP.overriddenValue = validateValues(newP.type, cutArr[2]);
+        newP.defaultValue = validateValues(newP.type, cutArr[3]);
+        
+        System.out.println(newP + ", Environment: " + newP.environment);
+
+        return newP;
+    }
+
+    public static Object validateValues(String type, Object value){
+        if(type.equalsIgnoreCase("NUMBER")){
+            value = Integer.parseInt((String)value);
+        }else if(type.equalsIgnoreCase("BOOLEAN")){
+            value = Boolean.parseBoolean((String)value);
+        }else{
+            value = value.toString().strip();
+        }
+        
+        return value;
+    }
 }

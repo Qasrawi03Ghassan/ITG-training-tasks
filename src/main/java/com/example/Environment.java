@@ -46,7 +46,43 @@ public class Environment {
     }
 
     public void addParameter(Parameter p){
-        parameters.add(p);
+        if(parameters.isEmpty()){
+            parameters.add(p);
+        }else{
+
+            if (doesExist(p)) {
+                System.out.println("Parameter with name \"" + p.getName() +
+                                "\" already exists in \"" + getVersion() +
+                                "\" environment");
+            } else {
+                parameters.add(p);
+            }
+
+        }
+    }
+
+    public boolean doesExist(Parameter p){
+        boolean exists = false;
+        for (Parameter param : parameters) {
+            if (param.getName().equals(p.getName()) &&
+                param.getEnvironment().equals(p.getEnvironment())) {
+                exists = true;
+                break;
+            }
+        }
+            return exists;
+    }
+
+    public boolean doesExist(String name,String env){
+        boolean exists = false;
+        for (Parameter param : parameters) {
+            if (param.getName().equals(name) &&
+                param.getEnvironment().equals(env)) {
+                exists = true;
+                break;
+            }
+        }
+            return exists;
     }
 
     public void removeParameter(Long id){
@@ -170,7 +206,5 @@ public class Environment {
         }else{
             System.out.println();
         }
-    }
-
-  
+    }  
 }

@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.util.Scanner;
 
 public  class MainMethods {
-    static Long newId = 0L;
+    static Long newId = Parameter.x;
     public static void validateCommand(String command,Scanner in){
         if(command.equalsIgnoreCase("quit") || command.equalsIgnoreCase("exit") || command.equals("q")){
             System.exit(0);
@@ -59,6 +59,7 @@ public  class MainMethods {
         String type="";
         Object value=null;
         String environment="";
+        
         switch (op) {
             case "addparameter":
                 if(params.length != 4){
@@ -237,6 +238,21 @@ public  class MainMethods {
 
                 break;
 
+            case "savetodb","savedb":
+                try {
+                    FileWriter fr = new FileWriter("db.txt");
+                    
+                    for(int i=0;i<envsArr.length;i++){
+                        for(int j=0;j<envsArr[i].getParameters().size();j++){
+                            fr.write(envsArr[i].getParameters().get(j).toString() + ", Environment: " + envsArr[i].getVersion() + ", parameter ID: " + envsArr[i].getParameters().get(j).getId() + "\n");
+                        }
+                    }
+                    fr.close();
+                } catch (Exception e) {
+                    System.err.println("ERROR: " + e.getMessage());
+                }
+                break;
+
             default:
                 System.out.println("Invalid command.");
                 break;
@@ -246,10 +262,10 @@ public  class MainMethods {
     public static void handleAddParam(Environment envObj,String name, String type, Object value, String env){
         newId++;
         Parameter newParam = null;
-        if(env.equals(envObj.getVersion())){
+        if(env.equals(envObj.getVersion()) && !envObj.doesExist(name,env)){
             newParam = new Parameter(newId,name,type,value,value,envObj.getVersion());
+            envObj.addParameter(newParam);
         }
-        envObj.addParameter(newParam);
     }
 
     public static void handleUpdateParameter(Environment envObj,String name,String type, Object value, String env){
