@@ -1,4 +1,4 @@
-# Task 3: Building a dynamic configuration management system using Java  
+# Task 2: Building a dynamic configuration management system using Java  
 ### Scenario  
 You’re building a **configuration management system** for a cloud-based application.  
 This system stores and manages parameters (settings) that control application behavior — things like SMS limits, retry counts, URLs, etc.  
