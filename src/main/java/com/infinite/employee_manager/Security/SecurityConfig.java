@@ -26,7 +26,7 @@ public class SecurityConfig {
         authorizeHttpRequestsCustomizer
             .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
             .requestMatchers("/login","/error").permitAll()
-            .requestMatchers("/employees/add","/employees/edit","/employees/delete").hasRole("ADMIN")
+            .requestMatchers("/employees/add","/employees/edit","/employees/delete").hasAuthority("ADMIN")
             .anyRequest().authenticated()
     )
     .formLogin(form ->
@@ -40,7 +40,12 @@ public class SecurityConfig {
     .logout(logout -> 
     logout
         .logoutUrl("/logout")
-        .logoutSuccessUrl("/login")
+        .logoutSuccessUrl("/login?logout")
+
+        .deleteCookies("JSESSIONID")
+        .invalidateHttpSession(true)
+        .clearAuthentication(true)
+
         .permitAll()
     )
     .csrf(csrf->csrf.disable())
@@ -51,7 +56,7 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(PasswordEncoder pe){
         UserDetails user = User.withUsername("test1")
             .password(pe.encode("testPass"))
-            .roles("USER")
+            .roles("ADMIN")
             .build();
         
             return new InMemoryUserDetailsManager(user);

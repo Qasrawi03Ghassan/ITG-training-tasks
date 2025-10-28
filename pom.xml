@@ -29,7 +29,6 @@
 	<properties>
 		<java.version>25</java.version>
 	</properties>
-	<packaging>war</packaging>
 	<dependencies>
 		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>

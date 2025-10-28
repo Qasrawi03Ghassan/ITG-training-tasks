@@ -1,5 +1,5 @@
 package com.infinite.employee_manager.Repositories;
 
-public class EmployeesRepository {
+public class UserRepository {
     
 }
