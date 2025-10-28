@@ -10,13 +10,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <style>
         .gradient-custom {
-            
             background: rgb(15, 83, 161);
-
-            background: -webkit-radial-gradientcircle at top left, rgb(15, 83, 161), rgb(219, 219, 219),rgb(53, 142, 245);
-
+            background: -webkit-radial-gradient(circle at top left, rgb(15, 83, 161), rgb(219, 219, 219),rgb(53, 142, 245));
             background: radial-gradient(circle at top left, rgb(15, 83, 161), rgb(219, 219, 219),rgb(53, 142, 245));
-            
         }
         .close {
         position: relative;

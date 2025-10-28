@@ -29,11 +29,11 @@ public class Employee {
     public void setName(String name) {
         this.name = name;
     }
-    public String getErmail() {
+    public String getEmail() {
         return email;
     }
-    public void setErmail(String ermail) {
-        this.email = ermail;
+    public void setEmail(String email) {
+        this.email = email;
     }
     public String getDepartment() {
         return department;
