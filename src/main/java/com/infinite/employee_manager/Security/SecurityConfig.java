@@ -1,7 +1,10 @@
 package com.infinite.employee_manager.Security;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.jaas.memory.InMemoryConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -12,12 +15,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.infinite.employee_manager.Services.UsersService;
+
 import jakarta.servlet.DispatcherType;
 
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final UsersService usersService;
+    public SecurityConfig(UsersService usersService){
+        this.usersService=usersService;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
@@ -26,7 +37,7 @@ public class SecurityConfig {
         authorizeHttpRequestsCustomizer
             .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
             .requestMatchers("/login","/error").permitAll()
-            .requestMatchers("/employees/add","/employees/edit","/employees/delete").hasAuthority("ADMIN")
+            .requestMatchers("/employees/add","/employees/edit/*","/employees/delete/*").hasRole("ADMIN")
             .anyRequest().authenticated()
     )
     .formLogin(form ->
@@ -54,12 +65,18 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder pe){
-        UserDetails user = User.withUsername("test1")
-            .password(pe.encode("testPass"))
-            .roles("ADMIN")
-            .build();
-        
-            return new InMemoryUserDetailsManager(user);
+
+        List<com.infinite.employee_manager.Models.User> usersList =  usersService.getUsersDB();
+         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+
+        for (com.infinite.employee_manager.Models.User myUser : usersList) {
+           UserDetails user = User.withUsername(myUser.getUsername())
+                .password(pe.encode(myUser.getPassword()))
+                .roles(myUser.getRole())
+                .build();
+                manager.createUser(user);
+        }
+        return manager;
     }   
 
     @Bean

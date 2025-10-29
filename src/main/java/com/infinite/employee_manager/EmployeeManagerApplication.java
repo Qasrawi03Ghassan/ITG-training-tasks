@@ -10,5 +10,4 @@ public class EmployeeManagerApplication extends SpringBootServletInitializer{
 	public static void main(String[] args) {
 		SpringApplication.run(EmployeeManagerApplication.class, args);
 	}
-
 }
