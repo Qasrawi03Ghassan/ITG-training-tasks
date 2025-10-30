@@ -46,6 +46,10 @@
             margin-bottom: 30px;
             width: 500px;
             align-self: center;
+
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
         }
         label{
             font-weight:bold;
@@ -70,7 +74,7 @@
                 </div>
                 <div style="display: flex;flex-direction: column;">
                     <label class="text text-white" style="font-size: 22px;text-align: left;">Email</label>
-                    <input class="input form-control" type="text" value="${editEmp.email}" name="email" required>
+                    <input class="input form-control" type="email" value="${editEmp.email}" name="email" required>
                 </div>
                 <div style="display: flex;flex-direction: column;">
                     <label class="text text-white" style="font-size: 22px; text-align: left;">Department</label>
@@ -78,7 +82,7 @@
                 </div>
                 <div style="display: flex;flex-direction: column;">
                     <label class="text text-white" style="font-size: 22px;text-align: left;">Salary</label>
-                    <input class="input form-control" type="number" value="${editEmp.salary}" name="salary" required>
+                    <input class="input form-control" type="number" value="${editEmp.salary}" name="salary" min="0" required>
                 </div>
 
                 <input type="reset" title="Cancel changes" class="btn btn-primary btn-lg" value="Reset" style="background-color: transparent; border: solid 1px rgba(107, 15, 161, 0.877); margin-top: 15px;margin-right: 30px;">

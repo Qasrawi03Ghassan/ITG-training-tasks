@@ -13,6 +13,10 @@
         .customGrad {
             background: radial-gradient(circle at bottom right, rgba(107, 15, 161, 0.877), rgb(131, 131, 131), rgba(107, 15, 161, 0.822));
         }
+        tr:hover{
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
@@ -36,10 +40,10 @@
         </c:if>
     </p>
 
-    <div class="container" style="position: absolute;top: 45%;left: 50%;transform: translate(-50%,-50%);display: flex;flex-direction: column;justify-content: center; align-items: center;">
+    <div class="container" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);display: flex;flex-direction: column;justify-content: center; align-items: center;">
         <c:choose>
             <c:when test="${not empty employees}">
-                <table class="table text-center" style="width: 40%;">
+                <table class="table table-hover text-center" style="width: 40%;">
                     <thead class="table-dark">
                         <tr>
                             <th>Employee ID</th>
@@ -51,8 +55,8 @@
                     </thead>
                     <tbody>
                         <c:forEach var="employee" items="${employees}">
-                            <tr>
-                                <td>${employee.id}</td>
+                            <tr onclick="window.location='/employees/${employee.id}'" class="empRow">
+                                <th>${employee.id}</th>
                                 <td>${employee.name}</td>
                                 <c:if test="${loggedUser.role == 'ADMIN'}">
                                     <td>

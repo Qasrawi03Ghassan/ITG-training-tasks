@@ -15,6 +15,8 @@ import com.infinite.employee_manager.Models.Employee;
 import com.infinite.employee_manager.Models.User;
 import com.infinite.employee_manager.Services.EmployeesService;
 import com.infinite.employee_manager.Services.UsersService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -45,12 +47,15 @@ public class EmployeesController {
     
     @GetMapping("/employees/{id}")
     public String getEmployeeById(@PathVariable(name="id") Long id,Model model) {
-        model.addAttribute("id",id);
+        Employee res = employeesService.getEmployeeById(id);
+        
+        model.addAttribute("employee",res);
         return "employee-details";
     }
 
     @PostMapping({"/employees/add"})
-    public String createEmployee(@PathVariable(value="name") String empName) {
+    public String createEmployee(@PathVariable(value="name") String empName,Model model) {
+        model.addAttribute("name",empName);
         return "employee-form";
     }
 
@@ -89,6 +94,4 @@ public class EmployeesController {
         
         return "employee-list";
     }
-    
-    
 }
