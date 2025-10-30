@@ -2,7 +2,6 @@ package com.infinite.employee_manager.Controllers;
 
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +17,7 @@ import com.infinite.employee_manager.Services.EmployeesService;
 import com.infinite.employee_manager.Services.UsersService;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
@@ -33,7 +33,13 @@ public class EmployeesController {
         this.usersService = usersService;
     }
 
-    @GetMapping("/employees")
+    @GetMapping("/")
+    public String goListPage() {
+        return "redirect:/employees";
+    }
+    
+
+    @GetMapping({"/employees","employees/"})
     public String getAllEmployees(Model model,@AuthenticationPrincipal UserDetails userDetails) {
         List<Employee> employees = employeesService.getEmpsDB();
         model.addAttribute("employees",employees);
@@ -57,14 +63,14 @@ public class EmployeesController {
 
     @PostMapping({"/employees/add"})
     public String goCreateEmployee(Model model) {
-
         model.addAttribute("add","val");
         return "employee-form";
     }
+
     @PostMapping({"/employees/add/perform-add"})
     public String performCreateEmployee(@RequestParam(name="name") String name, @RequestParam(name="email") String email, @RequestParam(name="department") String department, @RequestParam(name="salary") Double salary) {
+        
         employeesService.createNewEmployee(name, email, department, salary);
-
 
         return "redirect:/employees";
     }
@@ -80,28 +86,33 @@ public class EmployeesController {
 
     @PostMapping("/employees/delete/{id}")
     public String goDeleteEmployee(@PathVariable Long id, Model model) {
+
         Employee emp = employeesService.getEmployeeById(id);
+
         model.addAttribute("delEmp",emp);
         return "employee-form";
     }
 
     @PostMapping("/employees/edit/{id}/perform-edit")
-    public String performEditEmployee(@PathVariable Long id,Model model) {
-        Employee emp = employeesService.getEmployeeById(id);
-        //todo: implement employee edit here
+    public String performEditEmployee(@PathVariable Long id,
+        @RequestParam(name="name") String name,
+        @RequestParam(name="email") String email,
+        @RequestParam(name="salary") Double salary,
+        @RequestParam(name="department") String department,
+        Model model) {
+        
+            Employee emp = employeesService.setEmployeeDataById(id, name, email, department, salary);
 
-
-
-        model.addAttribute("editEmp",emp);
-        return "employee-form";
-    }
+            model.addAttribute("editEmp",emp);
+            
+            return "redirect:/employees/" + id;
+        }
 
     @PostMapping("/employees/delete/{id}/perform-del")
     public String performDeleteEmployee(@PathVariable Long id) {
-        //todo:implement employee deletion here
 
+        employeesService.deleteEmployeeById(id);
 
-        
-        return "employee-list";
+        return "redirect:/employees";
     }
 }

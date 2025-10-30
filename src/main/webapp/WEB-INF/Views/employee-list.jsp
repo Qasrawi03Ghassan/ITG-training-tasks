@@ -22,6 +22,7 @@
 <body>
 <section class="vh-100 customGrad">
     <h1 class="text-center text-white mb-5">Employees List</h1>
+
     <div style="position: absolute;top: 0;right: 0; background-color: rgb(142, 56, 192); border-radius: 25px;padding: 10px;margin: 20px;" title="Role: ${loggedUser.role}">
         <c:if test="${loggedUser.role == 'ADMIN'}">
             <i class="fa-solid fa-user-tie" style="color: white;font-size: 60px;"></i>

@@ -107,7 +107,7 @@
     <c:if test="${add != null}">
         <div class="maindiv">
             <h1 class="h1 text text-center text-white">Add a new employee</h1>
-            <form class="text-center container" method="post" action="/employees/add/perform-add">
+            <form class="text-center container" method="post" action="<c:url value='/employees/add/perform-add'/>">
                 <div style="display: flex;flex-direction: column;">
                     <label class="text text-white" style="font-size: 22px;margin-bottom: 5px;text-align: left;">Name</label>
                     <input class="input form-control" type="text" name="name" required>

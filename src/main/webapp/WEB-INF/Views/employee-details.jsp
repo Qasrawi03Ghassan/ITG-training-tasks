@@ -61,6 +61,8 @@
         <i class="fa-solid fa-arrow-left" style="font-size: 25px;color: white;"></i>
     </div>
 
+        <h1 class="h1 text text-center text-white">Employee details</h1>
+
        <div class="maindiv">
 
             <div style="display: flex;justify-content: center;">
