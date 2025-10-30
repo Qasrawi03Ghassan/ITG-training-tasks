@@ -2,6 +2,7 @@ package com.infinite.employee_manager.Controllers;
 
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,7 @@ import com.infinite.employee_manager.Models.Employee;
 import com.infinite.employee_manager.Models.User;
 import com.infinite.employee_manager.Services.EmployeesService;
 import com.infinite.employee_manager.Services.UsersService;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -54,9 +56,17 @@ public class EmployeesController {
     }
 
     @PostMapping({"/employees/add"})
-    public String createEmployee(@PathVariable(value="name") String empName,Model model) {
-        model.addAttribute("name",empName);
+    public String goCreateEmployee(Model model) {
+
+        model.addAttribute("add","val");
         return "employee-form";
+    }
+    @PostMapping({"/employees/add/perform-add"})
+    public String performCreateEmployee(@RequestParam(name="name") String name, @RequestParam(name="email") String email, @RequestParam(name="department") String department, @RequestParam(name="salary") Double salary) {
+        employeesService.createNewEmployee(name, email, department, salary);
+
+
+        return "redirect:/employees";
     }
 
     @PostMapping("/employees/edit/{id}")

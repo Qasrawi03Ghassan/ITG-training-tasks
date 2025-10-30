@@ -80,6 +80,12 @@
             </c:otherwise>
         </c:choose>
 
+        <c:if test="${loggedUser.role == 'ADMIN'}">
+            <form method="post" action="/employees/add">
+                <button class="btn btn-success btn-lg" style="font-weight: bold;">Add new employee</button>
+            </form>
+        </c:if>
+
         <form action="/logout" class="text-center mt-4">
             <button class="btn btn-outline-light btn-lg">Sign out</button>
         </form>

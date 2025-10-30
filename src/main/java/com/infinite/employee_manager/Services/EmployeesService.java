@@ -36,4 +36,10 @@ public class EmployeesService {
         }
         return res;
     }
+
+    public Employee createNewEmployee(String name, String email, String department, Double salary){
+        //todo: Continue implementing new employee creation
+        Employee newEmp = new Employee();
+        return newEmp;
+    }
 }
