@@ -1,5 +1,6 @@
 package com.infinite.employee_manager.Controllers;
 
+import org.apache.tomcat.util.http.Method;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,13 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @Controller
-@RequestMapping("/error")
 public class CustomErrorController implements ErrorController{
 
-    @GetMapping
+    @RequestMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
 
         Object statusObj = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
@@ -24,9 +27,7 @@ public class CustomErrorController implements ErrorController{
 
         
         switch (status) {
-            case 403:
-                message = "You are not authorized to access this page, contact an administrator for further information";
-                break;
+
             case 404:
                 message = "The page you are looking for does not exist";
                 break;
@@ -39,10 +40,15 @@ public class CustomErrorController implements ErrorController{
                 }
         }
         
-
         model.addAttribute("status", status);
         model.addAttribute("message", message);
 
         return "error";
-    }        
+    }      
+
+    @RequestMapping("/access-denied")
+    public String showPreventAccess() {
+        return "access-denied";
+    }
+    
 }

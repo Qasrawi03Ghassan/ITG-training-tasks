@@ -29,8 +29,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
-    return http
-    .authorizeHttpRequests(authorizeHttpRequestsCustomizer ->
+    return http.authorizeHttpRequests(authorizeHttpRequestsCustomizer ->
         authorizeHttpRequestsCustomizer
             .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll() //Important for JSP views
 
@@ -57,6 +56,9 @@ public class SecurityConfig {
         .clearAuthentication(true)
 
         .permitAll()
+    )
+    .exceptionHandling(exceptionHandlingCustomizer -> 
+    exceptionHandlingCustomizer.accessDeniedPage("/access-denied")
     )
     .csrf(csrf->csrf.disable())
     .build();

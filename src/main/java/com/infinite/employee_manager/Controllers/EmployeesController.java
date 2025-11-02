@@ -46,7 +46,7 @@ public class EmployeesController {
         List<Employee> employees = employeesService.getEmpsDB();
         model.addAttribute("employees",employees);
 
-        User user = null;
+        User user;
         if(userDetails != null){
             user = usersService.findByUsername(userDetails.getUsername());
             model.addAttribute("loggedUser",user);
