@@ -3,6 +3,7 @@ package com.infinite.employee_manager.Controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,6 @@ import com.infinite.employee_manager.Services.EmployeesService;
 import com.infinite.employee_manager.Services.UsersService;
 
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.infinite.employee_manager.Repositories.UserRepository;
 
 
 
@@ -27,7 +25,9 @@ import com.infinite.employee_manager.Repositories.UserRepository;
 @Controller
 public class EmployeesController {
 
+    @Autowired
     private final EmployeesService employeesService;
+    @Autowired
     private final UsersService usersService;
 
     public EmployeesController(EmployeesService employeesService, UsersService usersService){
