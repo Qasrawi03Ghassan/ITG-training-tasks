@@ -3,12 +3,21 @@ package com.infinite.employee_manager.Services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.infinite.employee_manager.Models.Employee;
+import com.infinite.employee_manager.Repositories.EmployeesRepository;
 
 @Service
 public class EmployeesService {
+
+    @Autowired
+    private final EmployeesRepository employeesRepository;
+    public EmployeesService(EmployeesRepository employeesRepository){
+        setUpDB();
+        this.employeesRepository = employeesRepository;
+    }
 
     private static Long id = 8L; 
 
@@ -22,10 +31,6 @@ public class EmployeesService {
         empsDB.add(new Employee(5L, "Tuqa", "Tuqa@example.com", "Front-End", 4000.0));
         empsDB.add(new Employee(6L, "Maram", "Maram@example.com", "QA", 2000.0));
         empsDB.add(new Employee(7L, "Hiba", "Hiba@example.com", "Finance", 3000.0));
-    }
-
-    public EmployeesService(){
-        setUpDB();
     }
 
     public List<Employee> getEmpsDB() {

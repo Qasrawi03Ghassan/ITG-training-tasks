@@ -2,8 +2,11 @@ package com.infinite.employee_manager.Security;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.jaas.memory.InMemoryConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.infinite.employee_manager.Repositories.UserRepository;
 import com.infinite.employee_manager.Services.UsersService;
 
 import jakarta.servlet.DispatcherType;
@@ -23,6 +27,7 @@ import jakarta.servlet.DispatcherType;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
 
     private final UsersService usersService;
     public SecurityConfig(UsersService usersService){
@@ -35,7 +40,7 @@ public class SecurityConfig {
     return http
     .authorizeHttpRequests(authorizeHttpRequestsCustomizer ->
         authorizeHttpRequestsCustomizer
-            .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+            .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll() //Important for JSP views
             .requestMatchers("/login","/error").permitAll()
             .requestMatchers("/employees/add","/employees/edit/*","/employees/delete/*").hasRole("ADMIN")
             .anyRequest().authenticated()
@@ -63,10 +68,11 @@ public class SecurityConfig {
     .build();
     }
 
+    /*
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder pe){
 
-        List<com.infinite.employee_manager.Models.User> usersList =  usersService.getUsersDB();
+        Iterable<com.infinite.employee_manager.Models.User> usersList =  usersService.getUsersDB();
          InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
 
         for (com.infinite.employee_manager.Models.User myUser : usersList) {
@@ -77,10 +83,18 @@ public class SecurityConfig {
                 manager.createUser(user);
         }
         return manager;
-    }   
-
+    }
+    */   
+    
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(usersService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
 }

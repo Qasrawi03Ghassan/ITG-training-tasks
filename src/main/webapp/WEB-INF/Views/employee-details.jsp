@@ -57,7 +57,7 @@
 </head>
 <body>
 <section class="vh-100 customGrad">
-    <div class="back-div" title="Go back to employees list" onclick="window.history.back()">
+    <div class="back-div" title="Go back to employees list" onclick="window.location.href='/employees';">
         <i class="fa-solid fa-arrow-left" style="font-size: 25px;color: white;"></i>
     </div>
 

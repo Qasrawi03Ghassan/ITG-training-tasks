@@ -1,5 +1,9 @@
 package com.infinite.employee_manager.Repositories;
 
-public class EmployeesRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.infinite.employee_manager.Models.Employee;
+
+public interface EmployeesRepository extends JpaRepository<Employee, Long>{
     
 }

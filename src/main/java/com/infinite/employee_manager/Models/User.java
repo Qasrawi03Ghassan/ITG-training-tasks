@@ -1,17 +1,36 @@
 package com.infinite.employee_manager.Models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="Users")
 public class User {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+
+    @Column(length=50)
     private String name;
+
+    @Column(length=50)
     private String username;
+    
+    @Column(length=225)
     private String password;
+
+    @Column(length=20)
     private String role;
 
     public User(){
 
     }
 
-    public User(Long id,String name, String username, String password, String role){
+    public User(Long id, String name ,String username, String password, String role){
         this.id = id;
         this.name = name;
         this.username = username;
@@ -25,12 +44,6 @@ public class User {
     }
     public void setId(Long id) {
         this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
     public String getUsername() {
         return username;
@@ -49,6 +62,14 @@ public class User {
     }
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     
