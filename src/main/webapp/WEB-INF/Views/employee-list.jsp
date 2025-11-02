@@ -16,7 +16,13 @@
         tr:hover{
             cursor: pointer;
         }
-
+        #searchbar{
+            text-align: center;
+            align-self: center;
+            margin: 0 auto;
+            width: 500px;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -32,7 +38,7 @@
         </c:if>
     </div>
     <h2 class="text-center text-white">Welcome back, ${loggedUser.name}</h2>
-    <p class="text-center text-white">
+    <p class="text-center text-white mb-5">
         <c:if test="${loggedUser.role == 'USER'}">
                 Feel free to view current employees
         </c:if>
@@ -41,7 +47,16 @@
         </c:if>
     </p>
 
-    <div class="container" style="position: absolute;top: 50%;left: 50%;transform: translate(-50%,-50%);display: flex;flex-direction: column;justify-content: center; align-items: center;">
+    <div class="input-group mb-3" style="width: 35%;  margin: 0 auto;display: flex;flex-direction: row;">
+        <select class="form-select" id="searchField" style="margin-right: 5px;text-align: center;max-width: 100px;">
+            <option value="name">Name</option>
+            <option value="department">Dep.</option>
+        </select>
+        <input type="text" class="form-control" placeholder="Select an option then search" id="searchbar" oninput="changeTable()">
+    </div>
+
+
+    <div class="container" style="position: relative;display: flex;flex-direction: column;justify-content: center; align-items: center;">
         <c:choose>
             <c:when test="${not empty employees}">
                 <table class="table table-hover text-center" style="width: 40%;">
@@ -56,7 +71,7 @@
                     </thead>
                     <tbody>
                         <c:forEach var="employee" items="${employees}">
-                            <tr onclick="window.location='/employees/${employee.id}'" class="empRow">
+                            <tr onclick="window.location='/employees/${employee.id}'" class="empRow" data-department="${employee.department}">
                                 <th>${employee.id}</th>
                                 <td>${employee.name}</td>
                                 <c:if test="${loggedUser.role == 'ADMIN'}">
@@ -92,5 +107,28 @@
         </form>
     </div>
 </section>
+    <script>
+        function changeTable() {
+        const input = document.getElementById('searchbar').value.toLowerCase();
+        const field = document.getElementById('searchField').value; // "name" or "department"
+        const rows = document.querySelectorAll('.empRow');
+
+        rows.forEach(row => {
+            let textToCheck = '';
+            if (field === 'name') {
+                textToCheck = row.cells[1].textContent.toLowerCase();
+            } else if (field === 'department') {
+                textToCheck = row.dataset.department ? row.dataset.department.toLowerCase() : '';
+            }
+
+            if (textToCheck.includes(input)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+</script>
+
 </body>
 </html>
