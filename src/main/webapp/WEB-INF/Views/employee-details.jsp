@@ -66,8 +66,8 @@
        <div class="maindiv">
 
             <div style="display: flex;justify-content: center;">
-                <h1 class="text text-center text-white">Employee <strong>${employee.name}</strong>'s info</h1>
-                <h1 class="text text-center text-white" style="position: relative; left: 10%;font-weight: bold;">ID: ${employee.id}</h1>
+                <h1 class="text text-center text-white" style="font-size: 35px;">Employee <strong>${employee.name}</strong>'s info</h1>
+                <h1 class="text text-center text-white" style="position: relative; left: 5%;font-weight: bold;">ID: ${employee.id}</h1>
             </div>
             
                 <div style="display: flex;flex-direction: column;">
