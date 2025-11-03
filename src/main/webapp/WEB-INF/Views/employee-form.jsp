@@ -122,7 +122,7 @@
                 </div>
                 <div style="display: flex;flex-direction: column;">
                     <label class="text text-white" style="font-size: 22px;text-align: left;">Salary</label>
-                    <input class="input form-control" type="number"  name="salary" min="0" required>
+                    <input class="input form-control" type="number"  name="salary" min="0" step="0.01" required>
                 </div>
 
                 <div style="display: flex;flex-direction: column;">
