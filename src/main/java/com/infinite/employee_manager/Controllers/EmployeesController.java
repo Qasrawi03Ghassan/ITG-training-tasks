@@ -21,6 +21,8 @@ import com.infinite.employee_manager.Services.UsersService;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.infinite.employee_manager.Services.EmailService;
+
 
 
 
@@ -31,10 +33,13 @@ public class EmployeesController {
     private final EmployeesService employeesService;
     @Autowired
     private final UsersService usersService;
+     @Autowired
+    private final EmailService emailService;
 
-    public EmployeesController(EmployeesService employeesService, UsersService usersService){
+    public EmployeesController(EmployeesService employeesService, UsersService usersService,EmailService emailService){
         this.employeesService = employeesService;
         this.usersService = usersService;
+        this.emailService = emailService;
     }
 
     @GetMapping({"/","/employees/"})
@@ -86,9 +91,14 @@ public class EmployeesController {
     }
 
     @PostMapping({"/employees/add/perform-add"})
-    public String performCreateEmployee(@RequestParam(name="name") String name, @RequestParam(name="email") String email, @RequestParam(name="department") String department, @RequestParam(name="salary") Double salary) {
+    public String performCreateEmployee(@RequestParam(name="name") String name, @RequestParam(name="email") String email, @RequestParam(name="department") String department, @RequestParam(name="salary") Double salary,@RequestParam(name="notifEmail") String toEmail) throws Exception{
         
         employeesService.createNewEmployee(name, email, department, salary);
+        emailService.sendEmail(toEmail, "Confirmation of new employee addition", "Dear admin,\n you added a new employee with the following details:\n - Name: " + name + "\n" + 
+                                                                                                                                                                "- Email: " + email + "\n" +
+                                                                                                                                                                "- Department: " + department + "\n" +
+                                                                                                                                                                "- Salary: " + salary + "$\n" +
+        "If you think this is an error, please remove the employee from the system.");
 
         return "redirect:/employees";
     }

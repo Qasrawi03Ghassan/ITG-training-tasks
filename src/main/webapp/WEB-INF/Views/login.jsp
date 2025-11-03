@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .gradient-custom {
             background: rgb(15, 83, 161);
@@ -36,6 +37,9 @@
         font-weight: bold;
         cursor: pointer;
         color: rgb(15, 83, 161);
+    }
+    #i:hover{
+      cursor: pointer;
     }
     </style>
 </head>
@@ -81,14 +85,34 @@
                     <div data-mdb-input-init class="form-outline form-white mb-4">
                         <label class="form-label" for="typePasswordX" style="font-family: cursive;font-size: 20px;">Password</label>
                         <input type="password" id="password" name="password" class="form-control form-control-lg" required/>
+                        <i class="fa-solid fa-eye" id="i" style="color: white; font-size: 25px;position: absolute;right: 12px;top: 63%;" onclick="showPass()"></i>
                     </div>
                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5" type="submit">Sign in</button>
                     </div>
               </form>
-            <div>
+
+              <script>
+               function showPass() {
+                const password = document.getElementById("password");
+                const icon = document.getElementById("i");
+
+                // Toggle password type
+                if (password.type === "password") {
+                    password.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    password.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                }
+            }
+              </script>
+
+            <!-- <div>
               <p class="mb-0">Don't have an account? <a href="#!" class="text-white-50 fw-bold">Sign Up</a>
               </p>
-            </div>
+            </div> -->
 
           </div>
         </div>
