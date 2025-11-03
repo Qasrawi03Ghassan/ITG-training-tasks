@@ -55,6 +55,13 @@
         <input type="text" class="form-control" placeholder="Select an option then search" id="searchbar" oninput="changeTable()">
     </div>
 
+    <form method="get" action="/employees">
+        <div class="container mb-3" style="position: relative;width: 20%;text-align: center;">
+            <label class="text text-center text-white" style="margin-right: 20px;">Max. table size: </label>
+            <input type="number" step="1" style="width: 20%;" min="1" max="10" name="size" value="${pageSize}">
+            <input type="submit" class="btn btn-success btn-sm" value="submit size">
+        </div>
+    </form>
 
     <div class="container" style="position: relative;display: flex;flex-direction: column;justify-content: center; align-items: center;">
         <c:choose>
@@ -95,6 +102,27 @@
                 <h3 class="text-center text-white">There are currently no employees</h3>
             </c:otherwise>
         </c:choose>
+
+        <div class="container mb-5" style="display: flex;flex-direction: row;justify-content: space-around;width: 50%;">
+            
+            <c:if test="${currentPage > 0}">
+                <form method="get" action="/employees">
+                    <input type="text" style="display: none;" name="page" value="${currentPage - 1}">
+                    <input type="number" step="1" style="width: 20%; display: none;" min="1" max="10" name="size" value="${pageSize}">
+                    <input type="submit" class="btn btn-success" value="Previous page">
+                </form>
+            </c:if>
+            
+            <p class="text text-center text-white" style="align-self:center;">Page ${currentPage + 1} of ${totalPages}</p>
+
+            <c:if test="${currentPage + 1 < totalPages}">
+                <form method="get" action="/employees">
+                    <input type="text" style="display: none;" name="page" value="${currentPage + 1}">
+                    <input type="number" step="1" style="width: 20%; display: none;" min="1" max="10" name="size" value="${pageSize}">
+                    <input type="submit" class="btn btn-success" value="Next page">
+                </form>
+            </c:if>
+        </div>
 
         <c:if test="${loggedUser.role == 'ADMIN'}">
             <form method="post" action="/employees/add">

@@ -3,8 +3,11 @@ package com.infinite.employee_manager.Services;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.infinite.employee_manager.Models.Employee;
@@ -17,6 +20,11 @@ public class EmployeesService {
     private final EmployeesRepository employeesRepository;
     public EmployeesService(EmployeesRepository employeesRepository){
         this.employeesRepository = employeesRepository;
+    }
+
+    public Page<Employee> getPaginatedEmployees(int page, int size, String sortBy){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return employeesRepository.findAll(pageable);
     }
 
     public List<Employee> getEmpsDB() {

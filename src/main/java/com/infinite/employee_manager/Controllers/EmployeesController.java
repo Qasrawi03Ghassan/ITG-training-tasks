@@ -4,6 +4,7 @@ package com.infinite.employee_manager.Controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import com.infinite.employee_manager.Services.EmployeesService;
 import com.infinite.employee_manager.Services.UsersService;
 
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
@@ -35,16 +37,30 @@ public class EmployeesController {
         this.usersService = usersService;
     }
 
-    @GetMapping("/")
+    @GetMapping({"/","/employees/"})
     public String goListPage() {
         return "redirect:/employees";
     }
     
+    @GetMapping("/employeesPaged/")
+    public String redirectToPaginatedEmps() {
+        return "redirect:/employeesPaged";
+    }    
 
-    @GetMapping({"/employees","employees/"})
-    public String getAllEmployees(Model model,@AuthenticationPrincipal UserDetails userDetails) {
-        List<Employee> employees = employeesService.getEmpsDB();
+    @GetMapping("/employees")
+    public String getAllEmployees(Model model,@AuthenticationPrincipal UserDetails userDetails,@RequestParam(defaultValue="0") int page,@RequestParam(defaultValue="5") int size,@RequestParam(defaultValue="id") String id) {
+        
+        //List<Employee> employees = employeesService.getEmpsDB();
+
+        Page<Employee> empsPages = employeesService.getPaginatedEmployees(page, size, id);
+        List<Employee> employees = empsPages.getContent();
+
         model.addAttribute("employees",employees);
+
+         model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", empsPages.getTotalPages());
+        model.addAttribute("pageSize", size);
+        model.addAttribute("sortBy", id);
 
         User user;
         if(userDetails != null){
