@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/Qasrawi03Ghassan/rssagg/internal/database"
 	"github.com/go-chi/chi"
@@ -36,10 +37,11 @@ func main() {
 	}
 
 	queries := database.New(conn)
-
 	ApiCfg := ApiConfig{
 		DB: queries,
 	}
+
+	go startScaping(queries, 10, time.Minute)
 
 	router := chi.NewRouter()
 
