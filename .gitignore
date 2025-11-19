@@ -1,0 +1,4 @@
+.vscode/
+.env
+mini_payment_validation.exe
+vendor/
