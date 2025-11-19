@@ -27,7 +27,8 @@ Create a struct `PaymentValidator` that implements the interface and checks:
 Return:
 ```go
 type ValidationResult struct {
-    Valid   bool    Message string
+    Valid   bool
+    Message string
 }
 ```
 
