@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,5 +22,33 @@ func handleErr(ctx *gin.Context) {
 }
 
 func handlePayment(ctx *gin.Context) {
-	ctx.Status(http.StatusOK)
+	var newPayment Payment
+	var newValidationRes validationResult
+	err := ctx.ShouldBindBodyWithJSON(&newPayment)
+	if err != nil {
+		if err.Error() == "EOF" {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": "Invalid empty request",
+			})
+		} else if err.Error() == "json: cannot unmarshal string into Go struct field Payment.amount of type float64" {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": "Invalid amount type entered",
+			})
+		}
+		return
+	}
+
+	pValidator := paymentValidator{}
+	newValidationRes, err = pValidator.Validate(newPayment)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	log.Printf("Got a new payment with transactionId: %v, amount %v, currency: %v and customerId: %v", newPayment.TransactionID, newPayment.Amount, newPayment.Currency, newPayment.CustomerID)
+
+	if newValidationRes.Valid {
+		ctx.JSON(http.StatusOK, newPayment)
+	}
 }
