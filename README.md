@@ -1,6 +1,6 @@
 ﻿# Task: Build a Mini Payment Validation Service using GoLang
 Create a small Go application that:  
-**1. Reads a JSON request (payment info)**
+**1. Reads a JSON request (payment info)**  
     Example input JSON:  
     ```
     {
