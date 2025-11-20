@@ -7,10 +7,15 @@ type Payment struct {
 	CustomerID    string  `json:"customerId"`
 }
 
+type PaymentResponse struct {
+	TransactionID string `json:"transactionId"`
+	Status        string `json:"status"`
+	Message       string `json:"message,omitempty"`
+}
+
 type validationResult struct {
-	TransactionID string
-	Valid         bool
-	Message       string
+	Valid   bool
+	Message string
 }
 
 type Validation interface {

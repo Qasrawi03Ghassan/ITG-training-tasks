@@ -7,9 +7,7 @@ import (
 
 func (pValidator *paymentValidator) Validate(payment Payment) (validationResult, error) {
 	var res validationResult
-
 	res.Valid = false
-	res.TransactionID = payment.TransactionID
 
 	err := validateTransactionID(payment.TransactionID)
 	if err != nil {

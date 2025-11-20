@@ -49,6 +49,7 @@ func handlePayment(ctx *gin.Context) {
 	}
 	log.Printf("Got a new payment with transactionId: %v, amount %v, currency: %v and customerId: %v", newPayment.TransactionID, newPayment.Amount, newPayment.Currency, newPayment.CustomerID)
 
+	fmt.Println()
 	fmt.Println("===========================================")
 	fmt.Print("Final result: ")
 	fmt.Printf("%s ==> ", newPayment.TransactionID)
@@ -57,13 +58,18 @@ func handlePayment(ctx *gin.Context) {
 	finalRes := <-gateWayChannelRes
 	fmt.Println(finalRes)
 	fmt.Println("===========================================")
+	fmt.Println()
+
+	var response PaymentResponse
+	response.TransactionID = newPayment.TransactionID
 
 	if newValidationRes.Valid {
 		if finalRes == "APPROVED" {
-			newValidationRes.Message = "APPROVED"
+			response.Status = "APPROVED"
 		} else {
-			newValidationRes.Message = "REJECTED"
+			response.Status = "REJECTED"
+			response.Message = "Amount limit exceeded (must be less than 500)"
 		}
-		ctx.JSON(http.StatusOK, newValidationRes)
+		ctx.JSON(http.StatusOK, response)
 	}
 }
