@@ -19,6 +19,7 @@ func main() {
 	}
 
 	router := gin.Default()
+	router.SetTrustedProxies([]string{"127.0.0.1"})
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"https://*", "http://*"},
 		AllowMethods:     []string{"GET", "POST"},

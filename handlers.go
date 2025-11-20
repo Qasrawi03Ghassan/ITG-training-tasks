@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -51,12 +52,18 @@ func handlePayment(ctx *gin.Context) {
 
 	fmt.Println()
 	fmt.Println("===========================================")
-	fmt.Print("Final result: ")
-	fmt.Printf("%s ==> ", newPayment.TransactionID)
+
 	gateWayChannelRes := make(chan string)
 	go simCallExternalGateWay(newPayment, gateWayChannelRes)
-	finalRes := <-gateWayChannelRes
-	fmt.Println(finalRes)
+
+	var finalRes string
+	select {
+	case finalRes = <-gateWayChannelRes:
+
+		fmt.Printf("Gateway result: %v ==> %v\n", newPayment.TransactionID, finalRes)
+	case <-time.After(3 * time.Second):
+		fmt.Println("Gateway timeout")
+	}
 	fmt.Println("===========================================")
 	fmt.Println()
 
@@ -66,9 +73,14 @@ func handlePayment(ctx *gin.Context) {
 	if newValidationRes.Valid {
 		if finalRes == "APPROVED" {
 			response.Status = "APPROVED"
-		} else {
+		} else if finalRes == "REJECTED" {
 			response.Status = "REJECTED"
 			response.Message = "Amount limit exceeded (must be less than 500)"
+		} else {
+			ctx.JSON(http.StatusGatewayTimeout, gin.H{
+				"error": "Request timed out",
+			})
+			return
 		}
 		ctx.JSON(http.StatusOK, response)
 	}

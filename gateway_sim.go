@@ -6,7 +6,8 @@ import (
 )
 
 func simCallExternalGateWay(payment Payment, ch chan<- string) {
-	time.Sleep(time.Duration(rand.Intn(2)+1) * time.Second)
+	var seconds int = 2
+	time.Sleep(time.Duration(rand.Intn(seconds)+1) * time.Second)
 
 	if payment.Amount < 500 {
 		ch <- "APPROVED"
