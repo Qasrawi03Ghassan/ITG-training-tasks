@@ -26,7 +26,7 @@ func handleErr(ctx *gin.Context) {
 func handlePayment(ctx *gin.Context) {
 	var newPayment Payment
 	var newValidationRes validationResult
-	err := ctx.ShouldBindBodyWithJSON(&newPayment)
+	err := ctx.ShouldBindJSON(&newPayment)
 	if err != nil {
 		if err.Error() == "EOF" {
 			ctx.JSON(http.StatusBadRequest, gin.H{
@@ -35,6 +35,10 @@ func handlePayment(ctx *gin.Context) {
 		} else if err.Error() == "json: cannot unmarshal string into Go struct field Payment.amount of type float64" {
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"error": "Invalid amount type entered",
+			})
+		} else {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": fmt.Sprintf("Invalid parameters: %v", err.Error()),
 			})
 		}
 		return
