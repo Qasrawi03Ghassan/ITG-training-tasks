@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -48,7 +49,21 @@ func handlePayment(ctx *gin.Context) {
 	}
 	log.Printf("Got a new payment with transactionId: %v, amount %v, currency: %v and customerId: %v", newPayment.TransactionID, newPayment.Amount, newPayment.Currency, newPayment.CustomerID)
 
+	fmt.Println("===========================================")
+	fmt.Print("Final result: ")
+	fmt.Printf("%s ==> ", newPayment.TransactionID)
+	gateWayChannelRes := make(chan string)
+	go simCallExternalGateWay(newPayment, gateWayChannelRes)
+	finalRes := <-gateWayChannelRes
+	fmt.Println(finalRes)
+	fmt.Println("===========================================")
+
 	if newValidationRes.Valid {
-		ctx.JSON(http.StatusOK, newPayment)
+		if finalRes == "APPROVED" {
+			newValidationRes.Message = "APPROVED"
+		} else {
+			newValidationRes.Message = "REJECTED"
+		}
+		ctx.JSON(http.StatusOK, newValidationRes)
 	}
 }
