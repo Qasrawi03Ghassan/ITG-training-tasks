@@ -140,8 +140,8 @@ Use `WebSecurityConfigurerAdapter` (if using Spring 5) or the newer `SecurityFil
 **7. Expected output**  
 When you run the app:  
 
-- Login as `admin` → full control.
-- Login as `user` → read-only access.
+- Login as `admin` → full control. (Example: {username: admin, password: admin123})
+- Login as `user` → read-only access. (Example: {username: test, password: test})
 - Unauthorized users → redirected to login page.
 - All pages styled with basic Bootstrap for readability.
 
