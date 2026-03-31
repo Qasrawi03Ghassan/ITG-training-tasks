@@ -63,4 +63,24 @@ select {case result := <-ch:
     fmt.Println("Gateway Result:", result)case <-time.After(3 * time.Second):
     fmt.Println("Gateway Timeout")
 }
-```
+```  
+---  
+
+### API Usage:  
+The API is deployed on `Render` and can be accessed using the following [link](https://mini-payment-validation-api.onrender.com/)  
+
+##### Supported Endpoints:  
+ *  `GET /` : Returns "`Welcome to mini payment validation RESTful API server.`".  
+ * `GET /healthz`: Returns a JSON indicating the server is up as follows:  
+ ```json
+{
+    "message": "Service is up"
+}
+```  
+* `GET /err`: Returns a JSON indicating an error as follows:  
+ ```json
+{
+    "error": "Something wrong happened"
+}
+```  
+* `POST /payment`: takes a JSON as described in first section and returns the result.   
