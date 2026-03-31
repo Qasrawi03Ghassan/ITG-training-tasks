@@ -7,19 +7,19 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
+	//"github.com/joho/godotenv"
 )
 
 func main() {
-	godotenv.Load(".env")
+	/*godotenv.Load(".env")
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		log.Fatal("Couldn't find port in environment")
-	}
+	}*/
 
 	router := gin.Default()
-	router.SetTrustedProxies([]string{"127.0.0.1"})
+	router.SetTrustedProxies([]string{"0.0.0.0"})
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"https://*", "http://*"},
 		AllowMethods:     []string{"GET", "POST"},
@@ -34,7 +34,7 @@ func main() {
 	router.GET("/err", handleErr)
 	router.POST("/payment", handlePayment)
 
-	portBuffer := fmt.Sprintf("localhost:%v", port)
+	portBuffer := fmt.Sprintf("0.0.0.0:%v", "8080")
 	err := router.Run(portBuffer)
 	if err != nil {
 		log.Fatal("Couldn't start service")
